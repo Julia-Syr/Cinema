@@ -26,24 +26,24 @@ sendRequest('POST', 'https://jscp-diplom.netoserver.ru/', 'event=update', functi
   let films = response.films.result;
   let halls = response.halls.result.filter((openhalls) => openhalls.hall_open !== '0');
   let arrSeances = response.seances.result;
-
   let main = document.querySelector('main');
- 
+  main.innerHTML = '';
+
   for (let film of films) {
-    let hallSeances;
-    halls.forEach(function (hall) {
-      let seances = arrSeances.filter((seance) => (seance.seance_filmid == film.film_id) && (seance.seance_hallid == hall.hall_id));
+    let hallSeances = '';
+    halls.forEach(hall => {
+      let seances = arrSeances.filter((seance) => (seance.seance_filmid === film.film_id) && (seance.seance_hallid === hall.hall_id));
       if (seances.length > 0) {
-        hallSeances += `<div class="movie-seances__hall">
-         <h3 class="movie-seances__hall-title">${hall.hall_name}</h3>
-         <ul class="movie-seances__list">
-           ${seances.map(seance => `
-             <li class="movie-seances__time-block">
-               <a class="movie-seances__time" href="hall.html" data-film-name ="${film.film_name}" 
-               data-seance-start="${seance.seance_start}" data-seance-time="${seance.seance_time}" 
-               data-hall-name="${hall.hall_name}" data-hall-id="${hall.hall_id}" data-seance-id="${seance.seance_id}" 
-               data-hall-price-standart="${hall.hall_price_standart}"
-               data-hall-price-vip="${hall.hall_price_vip}">${seance.seance_time}</a>
+        hallSeances += `<div class = "movie-seances__hall">
+         <h3 class = "movie-seances__hall-title">${hall.hall_name}</h3>
+         <ul class = "movie-seances__list">
+            ${seances.map(seance => `
+             <li class = "movie-seances__time-block">
+               <a class = "movie-seances__time" href = "hall.html" data-film-name ="${film.film_name}" 
+               data-seance-start = "${seance.seance_start}" data-seance-time = "${seance.seance_time}" 
+               data-hall-name = "${hall.hall_name}" data-hall-id = "${hall.hall_id}" data-seance-id = "${seance.seance_id}" 
+               data-hall-price-standart = "${hall.hall_price_standart}"
+               data-hall-price-vip = "${hall.hall_price_vip}">${seance.seance_time}</a>
              </li>
            `)}
          </ul>          
@@ -53,16 +53,16 @@ sendRequest('POST', 'https://jscp-diplom.netoserver.ru/', 'event=update', functi
 
     if (hallSeances) {
       main.innerHTML += `<section class="movie">
-         <div class="movie__info">
-           <div class="movie__poster">
-             <img class="movie__poster-image" alt='${film.film_name}' src="${film.film_poster}">
+         <div class = "movie__info">
+           <div class = "movie__poster">
+             <img class = "movie__poster-image" alt = '${film.film_name}' src="${film.film_poster}">
            </div>
-           <div class="movie__description">
-             <h2 class="movie__title">${film.film_name}</h2>
-             <p class="movie__synopsis">${film.film_description}</p>
-             <p class="movie__data">
-               <span class="movie__data-duration">${film.film_duration}</span>
-               <span class="movie__data-origin">${film.film_origin}</span>
+           <div class = "movie__description">
+             <h2 class = "movie__title">${film.film_name}</h2>
+             <p class = "movie__synopsis">${film.film_description}</p>
+             <p class = "movie__data">
+               <span class = "movie__data-duration">${film.film_duration} мин</span>
+               <span class = "movie__data-origin">${film.film_origin}</span>
              </p>
            </div>
          </div>  
@@ -74,8 +74,8 @@ sendRequest('POST', 'https://jscp-diplom.netoserver.ru/', 'event=update', functi
   let seancesTime = document.querySelectorAll('.movie-seances__time');
 
   function updateSeances() {
-    seancesTime.forEach((time) => {
-      let seanceStart = +time.dataset.seanceStart;
+    seancesTime.forEach(time => {
+      let seanceStart = Number(time.dataset.seanceStart);
       let selectedDay = document.querySelector('.page-nav__day_chosen');
       let selectedDayIndex = Array.from(daysWeek).indexOf(selectedDay);
       let selectedDate = new Date();
@@ -94,8 +94,8 @@ sendRequest('POST', 'https://jscp-diplom.netoserver.ru/', 'event=update', functi
   }
 
   for (let pageNavDay of daysWeek) {
-    pageNavDay.addEventListener('click', function (e) {
-      e.preventDefault();
+    pageNavDay.addEventListener('click', function (event) {
+      event.preventDefault();
       let selectedDay = document.querySelector('.page-nav__day_chosen');
       if (selectedDay) {
         selectedDay.classList.remove('page-nav__day_chosen');
@@ -109,7 +109,7 @@ sendRequest('POST', 'https://jscp-diplom.netoserver.ru/', 'event=update', functi
   seancesTime.forEach((time) => {
     time.addEventListener('click', function (event) {
       let hallId = event.target.dataset.hallId;
-      let selectedHall = halls.find((hall) => hall.hall_id == hallId);
+      let selectedHall = halls.find((hall) => hall.hall_id === hallId);
       let selectedSeance = {
         ...event.target.dataset,
         hallConfig: selectedHall.hall_config

@@ -1,5 +1,4 @@
-let seanceData = localStorage.getItem('seance-data');
-let parsedSeances = JSON.parse(seanceData);
+let parsedSeances = JSON.parse(localStorage.getItem('seance-data'));
 let confStepWrapper = document.querySelector('.conf-step__wrapper');
 let movieTitle = document.querySelector('.buying__info-title');
 movieTitle.innerText = `${parsedSeances.filmName}`;

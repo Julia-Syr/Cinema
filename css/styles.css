@@ -448,4 +448,10 @@ body {
     flex-direction: column;
     margin-bottom: 2rem;
   }
+  .conf-step__wrapper {
+    white-space: nowrap;
+  }
+  .movie__poster {
+    margin: 0 auto;
+  }
 }
